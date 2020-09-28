@@ -10,12 +10,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CascadeType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Customer {
@@ -34,6 +38,7 @@ public class Customer {
 	private String email;
 	
 	@OneToMany(mappedBy="customer")
+	@JsonIgnore
 	private List<Address> adress;
 
 	public List<Address> getAdress() {

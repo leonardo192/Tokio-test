@@ -1,16 +1,20 @@
 package com.example.api.domain;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
+@JsonInclude(value=Include.NON_NULL)
 public class Address {
 
 	@Id
@@ -25,17 +29,21 @@ public class Address {
 
 	@Column(nullable=false)
 	private String localidade;
+	
+	@Column(nullable=false)
+	private String cep;
 
+	@Valid
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
-	public Long getCep() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setCep(Long cep) {
-		this.id = cep;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getLogradouro() {
@@ -71,6 +79,12 @@ public class Address {
 	}
 	
 	
-
+	public String getCep() {
+		return cep;
+	}
+	
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
 
 }

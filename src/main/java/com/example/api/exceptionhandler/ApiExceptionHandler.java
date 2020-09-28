@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.example.api.exception.BusinessException;
 import com.example.api.exception.EntityNotFoundException;
 
 @ControllerAdvice
@@ -30,6 +31,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		problem.setDataHora(LocalDateTime.now());
 		
 		return handleExceptionInternal(ex, problem,new HttpHeaders(), status, request);
+		
+	}
+	
+	
+	@ExceptionHandler(BusinessException.class)
+	public ResponseEntity<?> handlerBusinessException(BusinessException ex, WebRequest request){
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String detail =  ex.getMessage();
+		
+		ProblemHandler problem = new ProblemHandler();
+		problem.setStatus(status.value());
+		problem.setType("https://api.com.br/bad-request"); //fictício
+		problem.setTitle("Falha no input de um atributo/entidade");
+		problem.setDetail(detail);
+		problem.setDataHora(LocalDateTime.now());
+		
+		return handleExceptionInternal(ex, problem,new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 		
 	}
 	
